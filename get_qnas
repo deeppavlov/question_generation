@@ -1,4 +1,4 @@
 #!/bin/bash
 
 text=$1
-python convert_text_to_opennmt_format.py "$text" | python get_qnas.py
+python3 convert_text_to_opennmt_format.py "$text" | python get_qnas.py
