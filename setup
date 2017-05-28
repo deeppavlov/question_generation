@@ -9,7 +9,7 @@ if [ $retval -ne 0 ]; then
   fi
   echo "----------------Downloading question-generation model----------------"
   wget https://www.dropbox.com/s/jtp6ll263lz32xl/model.t7 -P data/
-fi        
+fi
 
 echo "----------------Installing python requirements----------------"
 pip3 install -r requirements.txt
