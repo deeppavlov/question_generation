@@ -1,9 +1,15 @@
 #!/bin/bash
 
-if [ ! -f data/model.t7 ]; then
+shasum -c data/model.t7.sha1
+retval=$?
+if [ $retval -ne 0 ]; then
+  if [ -f data/model.t7 ]; then
+    echo "----------------Removing stale model file----------------"
+    rm -f data/model.t7
+  fi
   echo "----------------Downloading question-generation model----------------"
   wget https://www.dropbox.com/s/jtp6ll263lz32xl/model.t7 -P data/
-fi
+fi        
 
 echo "----------------Installing python requirements----------------"
 pip install -r requirements.txt
