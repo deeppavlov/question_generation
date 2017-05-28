@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import zmq, sys, json
 from signal import signal, SIGPIPE, SIG_DFL
 
