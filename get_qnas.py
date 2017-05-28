@@ -28,7 +28,7 @@ if __name__ == '__main__':
     sock = zmq.Context().socket(zmq.REQ)
     sock.connect("tcp://127.0.0.1:5556")
     sock.send_string(json.dumps(data))
-    recieved = json.loads(sock.recv(), encoding='utf-8', strict=False)
+    recieved = json.loads(str(sock.recv(), "utf-8"), encoding='utf-8', strict=False)
     recieved = [(row[0]['tgt'], row[0]['pred_score'], row[0]['src']) for row in recieved]
     recieved = get_with_answers(recieved)
     for target, answer, score in sorted(recieved, key=lambda x: x[2], reverse=True):
