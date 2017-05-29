@@ -3,6 +3,19 @@ import zmq, sys, json
 from signal import signal, SIGPIPE, SIG_DFL
 
 
+class ConnectionHandler:
+    def __init__(self):
+        signal(SIGPIPE, SIG_DFL)
+        self.sock = zmq.Context().socket(zmq.REQ)
+        self.sock.connect("tcp://127.0.0.1:5556")
+
+    def __call__(self, data):
+        self.sock.send_string(json.dumps(data))
+        recieved = json.loads(str(self.sock.recv(), "utf-8"), encoding='utf-8', strict=False)
+        recieved = [(row[0]['tgt'], row[0]['pred_score'], row[0]['src']) for row in recieved]
+        return get_with_answers(recieved)
+
+
 def get_with_answers(recieved):
     answers = []
     for _, _, src in recieved:
@@ -19,18 +32,12 @@ def get_with_answers(recieved):
         answers.append(' '.join(answer))
     return [(recieved[i][0], answers[i], recieved[i][1]) for i in range(len(recieved))]
 
-
 if __name__ == '__main__':
-    signal(SIGPIPE, SIG_DFL)
-
     fin = sys.stdin
     data = [{"src": line} for line in fin]
 
-    sock = zmq.Context().socket(zmq.REQ)
-    sock.connect("tcp://127.0.0.1:5556")
-    sock.send_string(json.dumps(data))
-    recieved = json.loads(str(sock.recv(), "utf-8"), encoding='utf-8', strict=False)
-    recieved = [(row[0]['tgt'], row[0]['pred_score'], row[0]['src']) for row in recieved]
-    recieved = get_with_answers(recieved)
-    for target, answer, score in sorted(recieved, key=lambda x: x[2], reverse=True):
+    connect = ConnectionHandler()
+    received = connect(data)
+
+    for target, answer, score in sorted(received, key=lambda x: x[2], reverse=True):
         print("{}\t{}\t{}".format(target, answer, score))
