@@ -37,4 +37,6 @@ wait %1
 
 echo "----------------Stopping containers----------------"
 docker stop corenlp
+docker rm corenlp
 docker stop opennmt
+docker rm opennmt
