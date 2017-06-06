@@ -33,6 +33,8 @@ P="Waiting had its world premiere at the \
   Film Festival, where Menon won the Best Director Award."
 echo $P
 ./get_qnas $P
+wait %1
 
+echo "----------------Stopping containers----------------"
 docker stop corenlp
 docker stop opennmt
