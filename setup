@@ -24,15 +24,15 @@ opennmt_run_cmd="cd /root/opennmt && th tools/translation_server.lua \
   -host 0.0.0.0 -port 5556  -model /root/data/model.t7 -beam_size 12"
 docker run -d --name opennmt -it -p 5556:5556 -v $(pwd)/data:/root/data sld3/opennmt bash -c "$opennmt_run_cmd"
 
-sleep 5
+sleep 20
 
 echo "----------------Test output----------------"
 P="Waiting had its world premiere at the \
   Dubai International Film Festival on 11 December 2015 to positive reviews \
   from critics. It was also screened at the closing gala of the London Asian \
   Film Festival, where Menon won the Best Director Award."
-echo $P
-./get_qnas $P
+echo "$P"
+./get_qnas "$P"
 sleep 120
 
 echo "----------------Stopping containers----------------"
