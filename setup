@@ -8,7 +8,7 @@ if [ $retval -ne 0 ]; then
     rm -f data/model.t7
   fi
   echo "----------------Downloading question-generation model----------------"
-  wget https://www.dropbox.com/s/jtp6ll263lz32xl/model.t7 -P data/
+  wget https://s3.eu-central-1.amazonaws.com/idris-public-data/model.t7 -P data/
 fi
 
 echo "----------------Installing python requirements----------------"
@@ -16,7 +16,7 @@ pip3 install -r requirements.txt
 
 echo "----------------Pulling corenlp and opennmt docker images----------------"
 docker pull sld3/corenlp:3.6.0
-docker pull sld3/opennmt:latest
+docker pull sld3/opennmt:780979ab_distro20e52377
 
 echo "----------------Running corenlp and opennmt servers----------------"
 docker run -d --name corenlp -p 9000:9000 sld3/corenlp:3.6.0
